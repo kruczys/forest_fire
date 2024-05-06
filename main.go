@@ -29,6 +29,6 @@ func printForest(forest [][]int) {
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
-	forest := createForest(0.3, 5)
+	forest := createForest(0.99, 10)
 	printForest(forest)
 }
