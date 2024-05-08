@@ -3,11 +3,10 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"time"
 )
 
-func createForest(treeProbability float32, forestSize int) [][]int {
-	forest := make([][]int, forestSize)
+func createForest(treeProbability float32, forestSize int) (forest [][]int, err error) {
+	forest = make([][]int, forestSize)
 
 	for i := range forest {
 		forest[i] = make([]int, forestSize)
@@ -18,7 +17,12 @@ func createForest(treeProbability float32, forestSize int) [][]int {
 		}
 	}
 
-	return forest
+	return
+}
+
+func lightningStrike(forestSize int) (x, y int) {
+	x = forestSize
+	return
 }
 
 func printForest(forest [][]int) {
@@ -28,7 +32,8 @@ func printForest(forest [][]int) {
 }
 
 func main() {
-	rand.Seed(time.Now().UnixNano())
-	forest := createForest(0.99, 10)
-	printForest(forest)
+	forest, err := createForest(0.3, 5)
+	if err == nil {
+		printForest(forest)
+	}
 }
