@@ -55,7 +55,6 @@ func (f *forest) didLigthningHitTree(x, y int) bool {
 
 func (f *forest) burnForest(x, y int) {
 	windSpeedIndex := f.windSpeed / 10
-💀
 }
 
 func (f *forest) printForest() {
