@@ -14,8 +14,8 @@ type tree struct {
 type forest struct {
 	dimensions int
 	trees      [][]tree
-	windDir    int // 0 - NW, 1 - N, 2 - NE, 3 - E, 4 - SE, 5 - S, 6 - SW, 7 - W, to podwaja P spalenia drzew na kierunkach wiatru
-	windSpeed  int // windSpeed / 10 okresla ile pol dalej drzewa beda narazone na spalenie
+	windDir    int // 0 - NW, 1 - N, 2 - NE, 3 - E, 4 - SE, 5 - S, 6 - SW, 7 - W, to wykonuje windSpeed / 10 proby spalenia jednego drzewa na danych kierunkach
+	windSpeed  int
 }
 
 func (f *forest) populateForest(treeProbability float32, forestSize, windDir, windSpeed int) {
@@ -35,9 +35,14 @@ func (f *forest) populateForest(treeProbability float32, forestSize, windDir, wi
 	}
 }
 
-func (t *tree) setOnFire() {
-	t.value = -1
-	t.isOnFire = true
+func (t *tree) tryToSetOnFire() (success bool) {
+	chanceByAge := rand.Intn(301) >= t.age
+	if chanceByAge {
+		t.value = -1
+		t.isOnFire = true
+		success = true
+	}
+	return
 }
 
 func (f *forest) lightningStrike() {
@@ -54,7 +59,11 @@ func (f *forest) didLigthningHitTree(x, y int) bool {
 }
 
 func (f *forest) burnForest(x, y int) {
-	windSpeedIndex := f.windSpeed / 10
+	burningAttempts := f.windSpeed / 10
+
+	for i := 0; !f.trees[x][y].tryToSetOnFire() || i == burningAttempts; i++ {
+
+	}
 }
 
 func (f *forest) printForest() {
@@ -75,7 +84,7 @@ func (f *forest) printForest() {
 			case -1:
 				fmt.Print("🔥 ")
 			case -2:
-				fmt.Print("🌩️  ")
+				fmt.Print("🌩️ ")
 			default:
 				fmt.Print(f.trees[i][j], "  ")
 			}
@@ -86,7 +95,7 @@ func (f *forest) printForest() {
 
 func main() {
 	var forest forest
-	forest.populateForest(0.89, 10, 0, 30)
+	forest.populateForest(0.33, 10, 0, 30)
 	forest.printForest()
 	fmt.Println()
 	forest.lightningStrike()
