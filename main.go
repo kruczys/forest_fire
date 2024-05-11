@@ -45,13 +45,15 @@ func (t *tree) tryToSetOnFire() (success bool) {
 	return
 }
 
-func (f *forest) lightningStrike() {
+func (f *forest) lightningStrike() (success bool) {
 	x := rand.Intn(f.dimensions)
 	y := rand.Intn(f.dimensions)
 	if f.didLigthningHitTree(x, y) {
 		f.trees[x][y].value = -2
 		f.burnForest(x, y)
+		success = true
 	}
+	return
 }
 
 func (f *forest) didLigthningHitTree(x, y int) bool {
@@ -59,10 +61,32 @@ func (f *forest) didLigthningHitTree(x, y int) bool {
 }
 
 func (f *forest) burnForest(x, y int) {
-	burningAttempts := f.windSpeed / 10
+	if !f.trees[x][y].tryToSetOnFire() {
+		return
+	}
 
-	for i := 0; !f.trees[x][y].tryToSetOnFire() || i == burningAttempts; i++ {
+	burningRange := f.windSpeed / 10
+	dx := []int{-1, 0, 1, 0}
+	dy := []int{0, 1, 0, -1}
 
+	if f.windDir%2 != 0 {
+		dx = []int{-1, 1, 1, -1}
+		dy = []int{1, 1, -1, -1}
+	}
+
+	primeDirection := f.windDir % 4
+
+	for i := 0; i < burningRange; i++ {
+		newX := x + dx[primeDirection]*(i+1)
+		newY := y + dy[primeDirection]*(i+1)
+
+		if newX < 0 || newX >= f.dimensions || newY < 0 || newY >= f.dimensions {
+			continue
+		}
+
+		if f.trees[newX][newY].tryToSetOnFire() {
+			f.burnForest(newX, newY)
+		}
 	}
 }
 
