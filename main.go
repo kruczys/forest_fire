@@ -54,6 +54,6 @@ func (f *forest) printForest() {
 
 func main() {
 	var forest forest
-	forest.populateForest(0.3, 10)
+	forest.populateForest(0.4, 10)
 	forest.printForest()
 }
