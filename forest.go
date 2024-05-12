@@ -32,15 +32,16 @@ func (f *forest) populateForest(treeProbability float32, forestSize, windSpeed i
 }
 
 func (f *forest) lightningStrike(animate bool) {
-	x := rand.Intn(f.dimensions)
-	y := rand.Intn(f.dimensions)
-	if f.didLigthningHitTree(x, y) {
-		f.trees[x][y].value = -2
-		f.burnForest(x, y, animate)
-	} else {
-		f.lightningStrike(animate)
+	var x, y int
+	for {
+		x = rand.Intn(f.dimensions)
+		y = rand.Intn(f.dimensions)
+		if f.didLigthningHitTree(x, y) {
+			break
+		}
 	}
-
+	f.trees[x][y].value = -2
+	f.burnForest(x, y, animate)
 }
 
 func (f *forest) didLigthningHitTree(x, y int) bool {
@@ -84,7 +85,7 @@ func (f *forest) printForest() {
 			case 1:
 				fmt.Print("🌲 ")
 			case 0:
-				fmt.Print("🟫 ")
+				fmt.Print("   ")
 			case -1:
 				fmt.Print("🔥 ")
 			case -2:
