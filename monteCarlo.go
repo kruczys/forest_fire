@@ -7,12 +7,12 @@ type monteCarlo struct {
 	sampleSize int
 }
 
-func (m *monteCarlo) prepareExperiment(forestSize, sampleSize int) {
+func (m *monteCarlo) prepareExperiment(forestSize, sampleSize int) { // funkcja przygotowuje eksperyment
 	m.forestSize = forestSize
 	m.sampleSize = sampleSize
 }
 
-func (m *monteCarlo) conductExperiment() {
+func (m *monteCarlo) conductExperiment() { // funkcja przeprowadza eksperyment losowy i wyswietla rezultaty za pomoca innej funkcji
 	var currentWindSpeed int
 	for k := 0; k < 21; k++ {
 		var forestPercentage float32 = 0.1

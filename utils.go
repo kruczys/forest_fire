@@ -5,7 +5,7 @@ import (
 	"os/exec"
 )
 
-func clearScreen() {
+func clearScreen() { // funkcja pomocnicza czyszczaca terminal
 	cmd := exec.Command("clear")
 	cmd.Stdout = os.Stdout
 	cmd.Run()

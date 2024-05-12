@@ -14,7 +14,7 @@ type forest struct {
 	burntTreesTotal int
 }
 
-func (f *forest) populateForest(treeProbability float32, forestSize, windSpeed int) {
+func (f *forest) populateForest(treeProbability float32, forestSize, windSpeed int) { // funkcja inicjalizujaca las na podstawie parametrow
 	f.dimensions = forestSize
 	f.trees = make([][]tree, f.dimensions)
 	f.windSpeed = windSpeed
@@ -31,7 +31,7 @@ func (f *forest) populateForest(treeProbability float32, forestSize, windSpeed i
 	}
 }
 
-func (f *forest) lightningStrike(animate bool) {
+func (f *forest) lightningStrike(animate bool) { // funkcja symulujaca uderzenie pioruna, koordynaty beda losowane dopoki piorun nie trafi drzewa
 	var x, y int
 	for {
 		x = rand.Intn(f.dimensions)
@@ -44,11 +44,11 @@ func (f *forest) lightningStrike(animate bool) {
 	f.burnForest(x, y, animate)
 }
 
-func (f *forest) didLigthningHitTree(x, y int) bool {
+func (f *forest) didLigthningHitTree(x, y int) bool { // sprawdzenie czy piorun trafil w drzewo
 	return f.trees[x][y].value == 1
 }
 
-func (f *forest) burnForest(x, y int, animate bool) {
+func (f *forest) burnForest(x, y int, animate bool) { // rekurencyjna funkcja spalajaca las w losowych kierunkach
 	if animate {
 		f.printForest()
 	}
@@ -71,11 +71,11 @@ func (f *forest) burnForest(x, y int, animate bool) {
 	}
 }
 
-func (f *forest) calculateBurnRatio() float32 {
+func (f *forest) calculateBurnRatio() float32 { // funkcja obliczajaca procent spalenia lasu
 	return float32(f.burntTreesTotal) / float32(f.treesTotal)
 }
 
-func (f *forest) printForest() {
+func (f *forest) printForest() { // funkcja animujaca spalanie lasu
 	time.Sleep(10 * time.Millisecond)
 	clearScreen()
 
